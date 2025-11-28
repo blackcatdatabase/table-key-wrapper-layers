@@ -17,7 +17,7 @@ use BlackCat\Database\Support\DtoHydrator;
 final class KeyWrapperLayerDtoMapper
 {
     /** @var array<string,string> Column -> DTO property */
-    private const COL_TO_PROP = [ 'key_wrapper_id' => 'keyWrapperId', 'layer_no' => 'layerNo', 'kms_key_id' => 'kmsKeyId', 'kem_algo_id' => 'kemAlgoId', 'kem_ciphertext' => 'kemCiphertext', 'encap_pubkey' => 'encapPubkey', 'created_at' => 'createdAt' ];
+    private const COL_TO_PROP = [ 'id' => 'id', 'key_wrapper_id' => 'keyWrapperId', 'layer_no' => 'layerNo', 'kms_key_id' => 'kmsKeyId', 'kem_algo_id' => 'kemAlgoId', 'kem_ciphertext' => 'kemCiphertext', 'encap_pubkey' => 'encapPubkey', 'aad' => 'aad', 'meta' => 'meta', 'created_at' => 'createdAt' ];
 
     /** @var string[] */
     private const BOOL_COLS   = [];

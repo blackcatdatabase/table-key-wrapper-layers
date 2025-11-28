@@ -32,15 +32,51 @@ final class KeyWrapperLayersModule implements ModuleInterface
         $table = SqlIdentifier::qi($db, $this->table());
         $view  = SqlIdentifier::qi($db, self::contractView());
 
+        if ($d->isMysql()) {
+            $createViewSql = <<<'SQL'
+CREATE OR REPLACE ALGORITHM=MERGE SQL SECURITY INVOKER VIEW vw_key_wrapper_layers AS
+SELECT
+  id,
+  key_wrapper_id,
+  layer_no,
+  kms_key_id,
+  kem_algo_id,
+  aad,
+  meta,
+  created_at,
+  kem_ciphertext,
+  encap_pubkey,
+  CAST(UPPER(SHA2(kem_ciphertext, 256)) AS CHAR(64)) AS kem_ciphertext_hex,
+  CAST(UPPER(SHA2(encap_pubkey, 256))   AS CHAR(64)) AS encap_pubkey_hex
+FROM key_wrapper_layers;
+SQL;
+        } else {
+            $createViewSql = <<<'SQL'
+CREATE OR REPLACE VIEW vw_key_wrapper_layers AS
+SELECT
+  id,
+  key_wrapper_id,
+  layer_no,
+  kms_key_id,
+  kem_algo_id,
+  aad,
+  meta,
+  created_at,
+  kem_ciphertext,
+  encap_pubkey,
+  UPPER(encode(digest(kem_ciphertext,'sha256'),'hex'))::char(64) AS kem_ciphertext_hex,
+  UPPER(encode(digest(encap_pubkey,'sha256'),'hex'))::char(64)   AS encap_pubkey_hex
+FROM key_wrapper_layers;
+SQL;
+        }
+
         if (\class_exists('\\BlackCat\\Database\\Support\\DdlGuard')) {
-            (new \BlackCat\Database\Support\DdlGuard($db, $d))->applyCreateView(
-                "CREATE VIEW {$view} AS SELECT * FROM {$table}"
-            );
+            (new \BlackCat\Database\Support\DdlGuard($db, $d))->applyCreateView($createViewSql);
         } else {
             // Prefer CREATE OR REPLACE VIEW (gentle on dependencies)
-            $sql = "CREATE OR REPLACE VIEW {$view} AS SELECT * FROM {$table}";
-            $db->exec($sql);
+            $db->exec($createViewSql);
         }
+
     }
 
     public function upgrade(Database $db, SqlDialect $d, string $from): void
@@ -69,6 +105,13 @@ final class KeyWrapperLayersModule implements ModuleInterface
 
         // Quick index/FK check – generator injects names (case-sensitive per DB)
         $expectedIdx = [ 'idx_kwl_algo', 'idx_kwl_kw' ];
+        if ($d->isMysql()) {
+            // Drop PG-only index naming patterns (e.g., GIN/GiST)
+            $expectedIdx = array_values(array_filter(
+                $expectedIdx,
+                static fn(string $n): bool => !str_starts_with($n, 'gin_') && !str_starts_with($n, 'gist_')
+            ));
+        }
         $expectedFk  = [ 'fk_kwl_algo', 'fk_kwl_kms', 'fk_kwl_kw' ];
 
         $haveIdx = $hasTable ? SchemaIntrospector::listIndexes($db, $d, $table)     : [];

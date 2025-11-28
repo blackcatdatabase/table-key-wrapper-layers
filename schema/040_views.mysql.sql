@@ -1,6 +1,7 @@
--- Auto-generated from schema-views-mysql.psd1 (map@62c9c93)
+-- Auto-generated from schema-views-mysql.psd1 (map@mtime:2025-11-27T15:35:35Z)
 -- engine: mysql
 -- table:  key_wrapper_layers
+
 -- Contract view for [key_wrapper_layers]
 -- Hides ciphertexts; exposes hex helpers.
 CREATE OR REPLACE ALGORITHM=MERGE SQL SECURITY INVOKER VIEW vw_key_wrapper_layers AS
@@ -15,6 +16,6 @@ SELECT
   created_at,
   kem_ciphertext,
   encap_pubkey,
-  UPPER(HEX(kem_ciphertext)) AS kem_ciphertext_hex,
-  UPPER(HEX(encap_pubkey))   AS encap_pubkey_hex
+  CAST(UPPER(SHA2(kem_ciphertext, 256)) AS CHAR(64)) AS kem_ciphertext_hex,
+  CAST(UPPER(SHA2(encap_pubkey, 256))   AS CHAR(64)) AS encap_pubkey_hex
 FROM key_wrapper_layers;

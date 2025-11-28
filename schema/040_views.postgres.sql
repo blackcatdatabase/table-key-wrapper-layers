@@ -1,6 +1,7 @@
--- Auto-generated from schema-views-postgres.psd1 (map@62c9c93)
+-- Auto-generated from schema-views-postgres.psd1 (map@mtime:2025-11-27T15:36:13Z)
 -- engine: postgres
 -- table:  key_wrapper_layers
+
 -- Contract view for [key_wrapper_layers]
 -- Hides ciphertexts; exposes hex helpers.
 CREATE OR REPLACE VIEW vw_key_wrapper_layers AS
@@ -15,6 +16,6 @@ SELECT
   created_at,
   kem_ciphertext,
   encap_pubkey,
-  UPPER(encode(kem_ciphertext,''hex'')) AS kem_ciphertext_hex,
-  UPPER(encode(encap_pubkey,''hex''))   AS encap_pubkey_hex
+  UPPER(encode(digest(kem_ciphertext,'sha256'),'hex'))::char(64) AS kem_ciphertext_hex,
+  UPPER(encode(digest(encap_pubkey,'sha256'),'hex'))::char(64)   AS encap_pubkey_hex
 FROM key_wrapper_layers;
