@@ -1,6 +1,7 @@
--- Auto-generated from schema-map-postgres.psd1 (map@62c9c93)
+-- Auto-generated from schema-map-postgres.yaml (map@sha1:F0EE237771FBA8DD7C4E886FF276F91A862C3718)
 -- engine: postgres
 -- table:  key_wrapper_layers
+
 ALTER TABLE key_wrapper_layers ADD CONSTRAINT fk_kwl_kw   FOREIGN KEY (key_wrapper_id) REFERENCES key_wrappers(id) ON DELETE CASCADE;
 
 ALTER TABLE key_wrapper_layers ADD CONSTRAINT fk_kwl_kms  FOREIGN KEY (kms_key_id)     REFERENCES kms_keys(id) ON DELETE SET NULL;
