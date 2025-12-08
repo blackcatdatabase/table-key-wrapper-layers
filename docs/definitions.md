@@ -5,16 +5,16 @@ Individual layers that compose a key wrapper.
 ## Columns
 | Column | Type | Null | Default | Description |
 | --- | --- | --- | --- | --- |
-| aad | JSONB | YES |  | JSON AAD metadata used during wrapping. |
-| created_at | TIMESTAMPTZ(6) | NO | CURRENT_TIMESTAMP(6) | Creation timestamp (UTC). |
-| encap_pubkey | BYTEA | YES |  | Optional encapsulated public key. |
+| aad | JSON | YES |  | JSON AAD metadata used during wrapping. |
+| created_at | DATETIME(6) | NO | CURRENT_TIMESTAMP(6) | Creation timestamp (UTC). |
+| encap_pubkey | LONGBLOB | YES |  | Optional encapsulated public key. |
 | id | BIGINT | NO |  | Surrogate primary key. |
 | kem_algo_id | BIGINT | NO |  | KEM algorithm used for wrapping (FK crypto_algorithms.id). |
-| kem_ciphertext | BYTEA | NO |  | Ciphertext blob for the wrapped key material. |
+| kem_ciphertext | LONGBLOB | NO |  | Ciphertext blob for the wrapped key material. |
 | key_wrapper_id | BIGINT | NO |  | Parent key wrapper (FK key_wrappers.id). |
 | kms_key_id | BIGINT | YES |  | KMS key used for the layer, if any. |
 | layer_no | SMALLINT | NO |  | Layer order (1..N). |
-| meta | JSONB | YES |  | Additional JSON metadata. |
+| meta | JSON | YES |  | Additional JSON metadata. |
 
 ## Engine Details
 
@@ -65,5 +65,5 @@ Foreign keys:
 ## Views
 | View | Engine | Flags | File |
 | --- | --- | --- | --- |
-| vw_key_wrapper_layers | mysql | algorithm=MERGE, security=INVOKER | [packages\key-wrapper-layers\schema\040_views.mysql.sql](https://github.com/blackcatacademy/blackcat-database/packages/key-wrapper-layers/schema/040_views.mysql.sql) |
-| vw_key_wrapper_layers | postgres |  | [packages\key-wrapper-layers\schema\040_views.postgres.sql](https://github.com/blackcatacademy/blackcat-database/packages/key-wrapper-layers/schema/040_views.postgres.sql) |
+| vw_key_wrapper_layers | mysql | algorithm=MERGE, security=INVOKER | [schema\040_views.mysql.sql](schema\040_views.mysql.sql) |
+| vw_key_wrapper_layers | postgres |  | [schema\040_views.postgres.sql](schema\040_views.postgres.sql) |
