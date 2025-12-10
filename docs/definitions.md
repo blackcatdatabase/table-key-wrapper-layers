@@ -5,16 +5,16 @@ Individual layers that compose a key wrapper.
 ## Columns
 | Column | Type | Null | Default | Description |
 | --- | --- | --- | --- | --- |
-| aad | mysql: JSON / postgres: JSONB | YES |  | JSON AAD metadata used during wrapping. |
-| created_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | NO | CURRENT_TIMESTAMP(6) | Creation timestamp (UTC). |
-| encap_pubkey | mysql: LONGBLOB / postgres: BYTEA | YES |  | Optional encapsulated public key. |
 | id | BIGINT | NO |  | Surrogate primary key. |
+| key_wrapper_id | BIGINT | NO |  | Parent key wrapper (FK key_wrappers.id). |
+| layer_no | SMALLINT | NO |  | Layer order (1..N). |
+| kms_key_id | BIGINT | YES |  | KMS key used for the layer, if any. |
 | kem_algo_id | BIGINT | NO |  | KEM algorithm used for wrapping (FK crypto_algorithms.id). |
 | kem_ciphertext | mysql: LONGBLOB / postgres: BYTEA | NO |  | Ciphertext blob for the wrapped key material. |
-| key_wrapper_id | BIGINT | NO |  | Parent key wrapper (FK key_wrappers.id). |
-| kms_key_id | BIGINT | YES |  | KMS key used for the layer, if any. |
-| layer_no | SMALLINT | NO |  | Layer order (1..N). |
+| encap_pubkey | mysql: LONGBLOB / postgres: BYTEA | YES |  | Optional encapsulated public key. |
+| aad | mysql: JSON / postgres: JSONB | YES |  | JSON AAD metadata used during wrapping. |
 | meta | mysql: JSON / postgres: JSONB | YES |  | Additional JSON metadata. |
+| created_at | mysql: DATETIME(6) / postgres: TIMESTAMPTZ(6) | NO | CURRENT_TIMESTAMP(6) | Creation timestamp (UTC). |
 
 ## Engine Details
 
