@@ -79,8 +79,8 @@ graph LR
   classDef inbound fill:#0f172a,stroke:#10b981,stroke-width:2px,color:#e2fcef;
   key_wrapper_layers["key_wrapper_layers"]:::center
   key_wrapper_layers -->|FK| crypto_algorithms["crypto_algorithms"]:::link
-  key_wrapper_layers -->|FK| kms_keys["kms_keys"]:::accent
-  key_wrapper_layers -->|FK| key_wrappers["key_wrappers"]:::link
+  key_wrapper_layers -->|FK| key_wrappers["key_wrappers"]:::accent
+  key_wrapper_layers -->|FK| kms_keys["kms_keys"]:::link
   linkStyle 0 stroke:#ff6b6b,stroke-width:3px,opacity:0.92;
   linkStyle 1 stroke:#64dfdf,stroke-width:3px,opacity:0.92;
   linkStyle 2 stroke:#a855f7,stroke-width:3px,opacity:0.92;
