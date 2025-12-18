@@ -1,0 +1,38 @@
+{
+  "tables": {
+    "key_wrapper_layers": {
+      "columns": {
+        "aad": {
+          "strategy": "passthrough"
+        },
+        "created_at": {
+          "strategy": "passthrough"
+        },
+        "encap_pubkey": {
+          "strategy": "passthrough"
+        },
+        "id": {
+          "strategy": "passthrough"
+        },
+        "kem_algo_id": {
+          "strategy": "passthrough"
+        },
+        "kem_ciphertext": {
+          "strategy": "passthrough"
+        },
+        "key_wrapper_id": {
+          "strategy": "passthrough"
+        },
+        "kms_key_id": {
+          "strategy": "passthrough"
+        },
+        "layer_no": {
+          "strategy": "passthrough"
+        },
+        "meta": {
+          "strategy": "passthrough"
+        }
+      }
+    }
+  }
+}
